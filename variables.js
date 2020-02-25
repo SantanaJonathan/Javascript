@@ -65,7 +65,7 @@ imprimirNombreYEdad(dario)
 //los objetos que se pasan por parametro se pasan por referencia
 // es decir cambian de la variable original
 function cumpleaños(persona){
-    //persona.edad += 1
+    //persona.edad += 1 //si lo cambia
     return{
         ...persona,
         edad: persona.edad + 1
@@ -73,3 +73,22 @@ function cumpleaños(persona){
     //creado un nuevo objeto mas viejo,
     //por lo que no cambia el original
 }
+
+//comparaciones
+var x= 4, y = "4"
+//x==y para saber si son iguales sin ver el tipo de var
+//x===y para ver si son iguales con el tipo de var
+//jonathan==dario //compara referencia de donde estan ubicados objetos
+//por lo que dara false, porq son 100pre diferente
+var santana= {
+    nombre: 'jonathan'
+}
+//var otraPersona = jonathan
+//aqui apunta a la misma variable, y si lo cambia en 
+//ejecucion apuntara el cambio a la misma variable 
+var otraPersona = {
+    ...santana,
+    nombre: 'jonathan'
+}
+//como es un nuevo objeto, hace otra referencia
+

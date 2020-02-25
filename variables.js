@@ -20,10 +20,56 @@ function imprimirNombreEnMayusculas(){
     nombre= nombre.toUpperCase()
     console.log(nombre)
 }
+
 function imprimirNombreEnMayusculasLocal(nombre){//solo local
     nombre= nombre.toUpperCase()
     console.log(nombre)
 }
-imprimirNombreEnMayusculasLocal(nombre)
 
+//OBJETOS
+var jonathan = {
+    apellido: 'Santana',
+    nombre: 'Jonathan',
+    edad: 28
+}
+var dario = {
+    apellido: 'Guzman',
+    nombre: 'Dario',
+    edad: 22
+}
+function imprimirNombreEnMayusculasObjeto(persona){
+    console.log(persona.nombre.toUpperCase())
+}
+function imprimirNombreEnMayusculasObjetoxVariable({ apellido }){
+    console.log(apellido.toUpperCase())
+}
+//imprimirNombreEnMayusculasObjetoxVariable(jonathan)
+//imprimirNombreEnMayusculasObjetoxVariable(dario)
+//imprimirNombreEnMayusculasObjetoxVariable({apellido: 'Quispe'})//crearlo
 
+//desestructuracion 
+function imprimirNombreEnMayusculasObjetoDes(persona){
+    //var nombre= persona.nombre
+    var { nombre } = persona
+    console.log(nombre.toUpperCase())
+}
+//imprimirNombreEnMayusculasObjetoDes(jonathan)
+function imprimirNombreYEdad(persona){//reto2
+    //var nombre= persona.nombre
+    var { nombre } = persona
+    var { edad } = persona
+    console.log('Hola me llamo ' + nombre.toUpperCase() + ' y tengo '+ edad)
+}
+imprimirNombreYEdad(dario)
+
+//los objetos que se pasan por parametro se pasan por referencia
+// es decir cambian de la variable original
+function cumpleaños(persona){
+    //persona.edad += 1
+    return{
+        ...persona,
+        edad: persona.edad + 1
+    }
+    //creado un nuevo objeto mas viejo,
+    //por lo que no cambia el original
+}

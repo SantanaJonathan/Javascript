@@ -10,7 +10,6 @@ class Persona{
         this.altura= altura
     }
 
- 
     saludar(fn){
         //var nombre = this.nombre
         //var apellido = this.apellido
@@ -210,15 +209,69 @@ function obtenerPersonaje(id){
 function onError(id){
     console.log(`Sucedio un error al obtener el personaje ${id}`)
 }
-
-obtenerPersonaje(1)
+/*
+obtenerPersonaje(2)
     .then(function (personaje){//.then obtener el valor de la promesa (personaje es igual a la data)
         console.log(`EL personaje 1 es ${personaje.name}`)
     })
     .catch(function(id){//err-> id de personaje/ o tambien .catch(onError)
         onError(id)
     })
-
+*/
 /**
  * Clases 36 - Promesas Encadenadas
  */
+/*
+obtenerPersonaje(1)
+    .then(personaje => {//.then obtener el valor de la promesa (personaje es igual a la data)
+        console.log(`EL personaje 1 es ${personaje.name}`)
+        return obtenerPersonaje(2)
+    })
+    .then( personaje => {
+    console.log(`EL personaje 2 es ${personaje.name}`)
+    return obtenerPersonaje(3)
+    })
+    .then( personaje => {
+        console.log(`EL personaje 3 es ${personaje.name}`)
+        return obtenerPersonaje(4)
+    })
+    .then( personaje => {
+        console.log(`EL personaje 4 es ${personaje.name}`)
+    })
+    .catch(onError)
+*/
+/**
+ * Clase 37 - Multiples promesas en paralelo
+ */
+//guardar en un arryas los id de personajes
+//var ids = [1,2,3,4,5]
+//recorrere un array y retornar un array de promesas
+//var promesas = ids.map(function(id){
+//    return obtenerPersonaje(id)
+//})
+/*
+var promesas = ids.map(id => obtenerPersonaje(id))
+Promise
+    .all(promesas)//llamar las promesas para que se resuelvan
+    .then(personajes => console.log(personajes))
+    .catch(onError)
+*/
+/**
+ * Clase 38 - Async-await (lo ultimo asincronismo)
+ * se debe utilizar juntos el Async con await
+ * await es el que detiene la ejecucion cuando traiga todas las promesas
+ * Este metodo clarifica los metodos antes usado
+ * No todo los navegadores los soporta esto
+ */
+async function obtenerPersonajes(){
+    var ids = [1,2,3,4,5]
+    var promesas = ids.map(id => obtenerPersonaje(id))
+    try{
+        var personajes = await Promise.all(promesas) //guardar todas las promesas en una variables
+        console.log(personajes)
+    }catch(id){
+        onError(id)
+    }
+}
+obtenerPersonajes()
+

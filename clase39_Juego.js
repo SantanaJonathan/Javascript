@@ -32,6 +32,7 @@
       apellido: 'Santana',
       edad: 24
   }
+
   function esMayorDeEdad(persona){
       //declarar var como hoshtin, es decir declarado arriba
       //por defecto lo declara asi javascript
@@ -144,8 +145,112 @@ function factorial(n){
     //!6 va ser -> lo q esta arriba
     debugger
     return this.cache[n]
-
 }
+
+/**
+ * Clase 50 - Closures de JS
+ * 
+ */
+function crearSaludo(finalDeFrase){//creadora d e otras funciones
+    return function(nombre){//funcion anonima el cual recuerda el parametro finalDfrase
+        console.log(`Hola ${nombre} ${finalDeFrase}`)
+    }
+}
+//otra forma
+// const saludar = (saludo) => (nombre) => 
+// console.log(`${saludo} ${nombre}`)
+
+// const saludando = saludar('Hola q tal')
+// saludando('Jonathan')
+
+const saludoArgentino = crearSaludo('che')
+const saludoMexicano = crearSaludo('guey')
+const saludoColombiano = crearSaludo('amigo')
+
+saludoArgentino('Jonathan')
+saludoMexicano('Jonathan')
+saludoColombiano('Jonathan')
+
+/**
+ * Clase 51 - Estructura de datos Inmutables
+ * Las estructuras de datos inmutables forman parte de los principios
+ * de la Programación Funcional y nos permiten evitar tener efectos 
+ * colaterales en los datos. En otras palabras, que hayan modificaciones
+ * en las variables sin nuestro consentimiento, produciendo comportamientos
+ * inesperados en el programa.
+ */
+//como en const se puede modificar, entonces en un objeto tambien es posible
+const jonathan1 = {
+    nombre: 'Jonathan',
+    apellido: 'Santana',
+    edad: 24
+}
+//arrow function, el cual modifica al objeto jonathan1
+//const cumpleaños = persona =>  persona.edad++
+
+const cumpleañosInmutable = persona => ({//creando un nuevo objeto en memoria
+    ...persona, //desglosando al objeto, por lo que no modificara el objeto que se le  pasa
+    edad: persona.edad + 1
+})
+//entonces hay que definir variables para guardar el objeto con edad mas vieja
+//const jonathan25 = cumpleañosInmutable(jonathan1)...etc
+
+/**
+ * Clase 52 - cambiando el contexto-alcance al llamr a una funcion
+ * en ciertos casos, cuando intentamos referirnos a this en alguna parte del
+ * código, es posible que tengamos un comportamiento inesperado, porque el
+ * contexto quizás no sea el que esperamos.
+Existen al menos tres maneras de cambiar el contexto de una función.
+Usando el método .bind, enviamos la referencia a la función sin ejecutarla, pasando el contexto como parámetro (osea el objeto- bind(objeto)).
+Usando el método .call, ejecutamos inmediatamente la función con el contexto indicado
+Usando el método .apply, es similar a .call pero los parámetros adicionales se pasan como un arreglo de valores
+ */
+const yesika = {
+    nombre: 'Jesika',
+    apellido: 'Cortez'
+}
+function saludar(saludo = 'Hola'){//crea por defecto un saludo
+    console.log(`${saludo}, mi nombre es ${this.nombre}`)//out -> undefinide(hace referencia a window)
+}
+// por defecto vendria siendo una funcion, llamar saludarAJonathan()
+// const saludarAJonathan = saludar.bind(jonathan1)//tienen el this atado al objeto
+// const saludarAJesika = saludar.bind(yesika)
+//                                 //parametro pasado a la funcion
+// setTimeout(saludar.bind(jonathan, 'Hola che'),1000)//lo imprime y se ve por un rato que atamos el this con el objeto
+
+saludar.call(jonathan1, 'Hola che')//llama la funcion y lo ejecuta
+saludar.apply(jonathan1, ['Hola che'])// lo mismo que el call pero con [array]
+//Nota -> hay siempre aegurarse a quien se dirige el this, por lo que todo es asincrono
+
+/**
+ * Clase 53 - (;) en JS
+ * opcional -> o
+ * obligatorio -> a
+ * inecesario -> i
+ */
+alert('Hola'); //o
+function saludando(){
+    console.log("Hola")
+};  //i
+
+for(var i = 0; i < 2 ; i++){
+}; //i
+
+//cuando empezamos con una nueva linea, luego con un array
+console.log('Hola mi nombre es Jonathan'); //a
+[1, 2, 3].forEach( n => console.log (n*2))
+
+const nombre = 'Jonathan'
+console.log('Hola mi nombre es Jonathan'); //a
+`${nombre} es un desarrollador`
+
+function calcularDoble(numero){
+    //return//error -> lo que q JS por cada Enter lo hace ver como un ; 
+    return{
+        original: numero, doble: numero * 2
+    }
+}
+
 
 
 

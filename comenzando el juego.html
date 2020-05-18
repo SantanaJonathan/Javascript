@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Simon Dice</title>
+    <style>
+      body {
+        margin: 0;
+        background: #dedede;
+        display: flex;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .gameboard {
+        height: 100vh;
+        width: 100vh;
+        border-radius: 50%;
+        overflow: hidden;
+        margin: 0 auto;
+        max-height: 60vh;
+        max-width: 60vh;
+      }
+
+      .color {
+        width: 50%;
+        height: 50%;
+        display: inline-block;
+      }
+
+      .left {
+        float: left;
+      }
+
+      .right {
+        float: left;
+      }
+
+      .celeste {
+        background: #0000FF;
+      }
+
+      .celeste.light {
+        background: #1E90FF;
+      }
+
+      .violeta {
+        background: #4B0082;
+      }
+
+      .violeta.light {
+        background: #9400D3;
+      }
+
+      .naranja {
+        background: #FF0000;
+      }
+
+      .naranja.light {
+        background: rgb(245, 106, 106);
+      }
+
+      .verde {
+        background: rgb(4, 194, 4);
+      }
+
+      .verde.light {
+        background: #ADFF2F;
+      }
+
+      .btn-start {
+        width: 400px;
+        height: 100px;
+        background: #ecf0f1;
+        color: #2c3e50;
+        font-size: 2.5rem;
+        position: absolute;
+        top: calc(50% - 50px);
+        left: calc(50% - 200px);
+      }
+
+      .hide {
+        display: none;
+      }
+    /*Cambiando toda la tipografia a la pagina*/
+      * {
+        font-family: 'Arial';
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="gameboard">
+      <div id="celeste" class="color celeste left" data-color="celeste"></div>
+      <div id="verde" class="color verde right" data-color="verde"></div>
+      <div id="naranja" class="color naranja left" data-color="naranja"></div>
+      <div id="violeta" class="color violeta right" data-color="violeta"></div>
+      <button id="btnEmpezar" class="btn-start" onclick="empezarJuego()">Empezar a jugar!</button>
+    </div>
+    <!--por medio cdn es el enlace de source-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"> </script>
+    <script>
+    const celeste = document.getElementById('celeste')//obtengo el id de class-gameboard
+    const violeta = document.getElementById('violeta')
+    const naranja = document.getElementById('naranja')
+    const verde = document.getElementById('verde')
+    const btnEmpezar = document.getElementById('btnEmpezar')
+    const ULTIMO_NIVEL = 3
+    class Juego{
+          constructor(){
+              this.inicializar = this.inicializar.bind(this)
+              this.inicializar()
+              this.generarSecuencia()
+              setTimeout(this.siguienteNivel,500)      
+          }
+        inicializar(){//se agrega los elemento que se quiera
+            this.siguienteNivel = this.siguienteNivel.bind(this)//el sgt nivel va estar atado al juego
+            this.elegirColor = this.elegirColor.bind(this)//esto es lo mismo que atar por cada color en agregarEventoClick       
+            this.toggleBtnEmpezar()//interuptor
+          this.nivel = 1
+          this.colores = {//representa a los colores dentor del JS
+              celeste,
+              violeta,
+              naranja,
+              verde
+          }
+        }
+        toggleBtnEmpezar(){
+            if(btnEmpezar.classList.contains('hide')){//ver si lo contiene la clase hide
+            btnEmpezar.classList.remove('hide')//desaparecer el btnEmpezar
+           }else{
+               btnEmpezar.classList.add('hide')
+           }
+        }
+
+        generarSecuencia(){//10 smon dice
+          this.secuencia = new Array(ULTIMO_NIVEL).fill(0).map(n => Math.floor(Math.random() * 4))//debe estar definido el array y eso lo hace con el fill
+        //floor -> redondea     
+        }
+        siguienteNivel(){
+            this.subnivel = 0
+            //this.nombreAtributo = 'valor' ejemplo para de esta manera agregar atributo, en este caso el nivel
+            this.iluminarSecuencia()
+            this.agregarEventosClick()
+        }
+        transformarNumeroAColor(numero){
+            switch(numero){
+                case 0:
+                    return 'celeste'
+                case 1:
+                    return 'violeta'
+                case 2:
+                    return 'naranja'
+                case 3:
+                    return 'verde' 
+            }
+
+        }
+        transformarColorANumero(color){
+            switch(color){
+                case 'celeste':
+                    return 0
+                case 'violeta':
+                    return 1
+                case 'naranja':
+                    return 2
+                case 'verde':
+                    return 3 
+            }
+
+        }
+        iluminarSecuencia(){
+            //siempre hay q utilizar let en un cilo for
+            //declarar la variables con const para que quede fijo
+            for (let i =0; i < this.nivel; i++){ //sale el mismo color porque en el ciclo for se va sobreponiendo
+                const color= this.transformarNumeroAColor(this.secuencia[i])
+                setTimeout(() => this.iluminarColor(color), 1000*i) //secunecia de prendido de colores
+            }
+        }
+        iluminarColor(color){//iluminar el color por medio de css
+            this.colores[color].classList.add('light')//light hecho en css
+            setTimeout(() => this.apagarColor(color),350)
+        }
+        apagarColor(color){
+            this.colores[color].classList.remove('light')//classList accede a los elementos de css
+        }
+        agregarEventosClick(){
+            // this.colores.celeste.addEventListener('click', this.elegirColor.bind(this))//manejar el evento -> nombre del evneto 'click' 
+            // this.colores.verde.addEventListener('click', this.elegirColor.bind(this))//funcion sin metodo muestra el body
+            // this.colores.violeta.addEventListener('click', this.elegirColor.bind(this))//bind -> atar al juego
+            // this.colores.naranja.addEventListener('click', this.elegirColor.bind(this))
+            this.colores.celeste.addEventListener('click', this.elegirColor)//manejar el evento -> nombre del evneto 'click' 
+            this.colores.verde.addEventListener('click', this.elegirColor)//funcion sin metodo muestra el body
+            this.colores.violeta.addEventListener('click', this.elegirColor)//bind -> atar al juego
+            this.colores.naranja.addEventListener('click', this.elegirColor)
+        }
+        eliminarEventosClick(){//remover eventos
+            this.colores.celeste.removeEventListener('click', this.elegirColor)//manejar el evento -> nombre del evneto 'click' 
+            this.colores.verde.removeEventListener('click', this.elegirColor)//funcion sin metodo muestra el body
+            this.colores.violeta.removeEventListener('click', this.elegirColor)//bind -> atar al juego
+            this.colores.naranja.removeEventListener('click', this.elegirColor)
+        }
+        elegirColor(ev){//los manejadores de eventos se suelen llamar ev
+            //console.log(this)//aqui pierde contexto el this, ya q refiere al color el cual hace respectivo evento
+            //nombre de la ruta para llegar al color del evenMouse
+            const nombreColor = ev.target.dataset.color
+            const numeroColor = this.transformarColorANumero(nombreColor)
+            this.iluminarColor(nombreColor)
+            if(numeroColor === this.secuencia[this.subnivel]){//colores por cada nivel - verificando
+                this.subnivel++
+                if(this.subnivel === this.nivel){
+                    this.nivel++
+                    this.eliminarEventosClick()
+                    if(this.nivel === (ULTIMO_NIVEL + 1)){
+                        this.ganoElJuego()
+                    }else{//pasamos la referencia de metodos de la forma this.siguienteNivel
+                        setTimeout(this.siguienteNivel,1500)//llamar al siguiente nivel mas tardesito
+                        //este this hace referencia a window lo que hay q agregar el bind
+                    }
+                }
+            }else{
+                this.perdioElJuego()
+            }
+        }
+
+        ganoElJuego(){//se lo ve en la pagina de sweetalert
+            swal('Simon dice!', 'Felicitaciones, ganaste el juego!', 'success')//llamada del sweetalert del cdn en el source
+            //el swal devuelve una promesa
+                .then( this.inicializar ) //cuando una funcion dentro de otra y no mas de una linea, se lo escribe referenciandolo
+                                          //this.inicializar
+        }
+
+        perdioElJuego(){//se lo ve en la pagina de sweetalert
+            swal('Simon dice!', 'Lo lamentamos, perdiste :(', 'error')//llamada del sweetalert del cdn en el source
+            //el swal devuelve una promesa
+                .then( () => {
+                    this.eliminarEventosClick()//aqui si se agrega todo las funcion con "()"
+                    this.inicializar()
+                })
+        }
+
+
+    }
+    function empezarJuego() {
+        window.juego = new Juego()
+    }
+      
+    </script>
+  </body>
+</html>
